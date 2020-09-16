@@ -1,0 +1,11 @@
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="dialogTitle" (nzOnCancel)="_handleCancel()" (nzOnOk)="_handleOk()">
+    <div *ngFor="let item of models;let i=index; trackBy: trackByFn">
+        <ng-container *ngIf="item.inputType==inputTypeEnum.LineText">
+            <input nz-input [(ngModel)]="item.value">
+        </ng-container>
+        <ng-container *ngIf="item.inputType==inputTypeEnum.TextArea">
+            <textarea nz-input placeholder="Autosize height with minimum and maximum number of lines"
+                [nzAutosize]="{ minRows: 2, maxRows: 6 }" [(ngModel)]="item.value"></textarea>
+        </ng-container>
+    </div>
+</nz-modal>

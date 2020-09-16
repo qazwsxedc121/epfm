@@ -1,0 +1,11 @@
+:host nz-table::ng-deep tr {
+  td {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 300px;
+  }
+  td:last-of-type {
+    text-align: right;
+  }
+}

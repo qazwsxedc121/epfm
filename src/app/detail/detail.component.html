@@ -1,0 +1,21 @@
+<div class="container">
+  <h1>
+    FileManager
+  </h1>
+  <div nz-row>
+    <div nz-col nzSpan="11">
+      <app-filemanager-panel #panelLeft (moveEvent)="panelRight.onMoveFrom($event)" [basePath]='basePath'>
+
+      </app-filemanager-panel>
+    </div>
+    <div nz-col nzSpan="2">
+
+    </div>
+    <div nz-col nzSpan="11">
+      <app-filemanager-panel #panelRight (moveEvent)="panelLeft.onMoveFrom($event)" [basePath]='basePath'>
+
+      </app-filemanager-panel>
+    </div>
+  </div>
+</div>
+<a routerLink="/">{{ 'PAGES.DETAIL.BACK_TO_HOME' | translate }}</a>

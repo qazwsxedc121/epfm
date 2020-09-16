@@ -1,0 +1,113 @@
+<div>
+    <div>
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a (click)="goHome()">{{basePath}}</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item *ngFor="let namePart of pathSect; let i=index">
+                <a (click)="goBreadcrumbPath(i)">{{namePart}}</a>
+            </nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </div>
+
+    <div>
+        <nz-button-group>
+            <button nz-button (click)="goHome()" title="Home">
+                <i nz-icon nzType="home" nzTheme="outline"></i>
+            </button>
+            <button nz-button (click)="updatePath()" title="Refresh">
+                <i nz-icon nzType="reload" nzTheme="outline"></i>
+            </button>
+            <button nz-button (click)="createTextFile()" title="New text file">
+                <i nz-icon nzType="file-add" nzTheme="outline"></i>
+            </button>
+            <button nz-button (click)="createDirectory()" title="New directory">
+                <i nz-icon nzType="folder-add" nzTheme="outline"></i>
+            </button>
+            <button nz-button (click)="startTerminal()" title="Start powershell terminal">
+                <i nz-icon nzType="code" nzTheme="outline"></i>
+            </button>
+        </nz-button-group>
+
+    </div>
+    <nz-table #directoryTable nzSize="small" [nzData]="currentDirectoryList"
+        [nzFrontPagination]="currentDirectoryList.length>10">
+        <tbody>
+            <tr *ngFor="let dir of directoryTable.data;let i=index">
+                <td>
+                    <a (click)='goPath(dir.name)' (contextmenu)='onContextMenu(dir.name)'>
+                        <i nz-icon nzType="folder" nzTheme="outline"></i>
+                        {{dir.name}}
+                    </a>
+                </td>
+                <td>
+                    <ng-container *ngIf="dir.name != '..'">
+                        {{ dir.ctime | date: 'yyyy/MM/dd HH:mm'}}
+                    </ng-container>
+                </td>
+                <td width="200">
+                    <ng-container *ngIf="dir.name != '..'">
+                        <button nz-button nzSize="small" (click)='delDir(dir.name)' title="Delete directory">
+                            <i nz-icon nzType="delete" nzTheme="outline"></i>
+                        </button>
+                        <button nz-button nzSize="small" (click)='renameDir(dir.name)' title="Rename directory">
+                            <i nz-icon nzType="edit" nzTheme="outline"></i>
+                        </button>
+                        <button nz-button nzSize="small" (click)='moveToOpposite(true, dir.name)'
+                            title="Move directory">
+                            M
+                        </button>
+                    </ng-container>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <nz-table #fileTable nzSize="small" [nzData]="currentFileList">
+        <!-- <thead>
+        <th>#</th>
+        <th>filename</th>
+        <th>action</th>
+      </thead> -->
+        <tbody>
+            <tr *ngFor="let fname of fileTable.data;let i=index">
+                <td>
+                    <i nz-icon nzType="file-text" nzTheme="outline"></i>
+                    <a (click)="openFileWithDefault(fname.name)">{{fname.name}}</a>
+                </td>
+                <td>{{fname.ctime | date:'yyyy/MM/dd HH:mm' }}</td>
+                <td>{{fname.size | filesize}}</td>
+                <td width="200">
+                    <button nz-button nzSize="small" (click)='delFile(fname.name)' title="Delete file">
+                        <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    </button>
+                    <button nz-button nzSize="small" (click)='editFile(fname.name)' title="Edit file content">
+                        <i nz-icon nzType="form" nzTheme="outline"></i>
+                    </button>
+                    <button nz-button nzSize="small" (click)='dupFile(fname.name)' title="Duplicate file">
+                        <i nz-icon nzType="copy" nzTheme="outline"></i>
+                    </button>
+                    <button nz-button nzSize="small" (click)='renameFile(fname.name)' title="Rename file">
+                        <i nz-icon nzType="edit" nzTheme="outline"></i>
+                    </button>
+                    <button nz-button nzSize="small" (click)='moveToOpposite(false, fname.name)' title="Move directory">
+                        M
+                    </button>
+                </td>
+            </tr>
+
+        </tbody>
+    </nz-table>
+    <div class="directory-status">
+        <span>{{currentFileList.length}} files</span>
+        &nbsp; &nbsp;
+        <span>{{currentDirectoryList.length}} folders</span>
+    </div>
+</div>
+
+<div>
+    <app-text-dialog #modal1 title="Create TextFile" (finish)="handleNewFile($event)"></app-text-dialog>
+    <app-text-dialog #modal2 title="Create Directory" (finish)="handleMakeDir($event)"></app-text-dialog>
+    <app-text-dialog #modal3 title="Rename Directory" (finish)="handleRenameDir($event)"></app-text-dialog>
+    <app-text-dialog #modal4 title="Rename File" (finish)="handleRenameFile($event)"></app-text-dialog>
+    <app-text-dialog #modal5 title="Edit TextFile" (finish)="handleEditFile($event)"></app-text-dialog>
+</div>
