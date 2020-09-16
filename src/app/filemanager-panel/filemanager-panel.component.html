@@ -30,8 +30,7 @@
         </nz-button-group>
 
     </div>
-    <nz-table #directoryTable nzSize="small" [nzData]="currentDirectoryList"
-        [nzFrontPagination]="currentDirectoryList.length>10">
+    <nz-table #directoryTable nzSize="small" [nzData]="currentDirectoryList" [nzFrontPagination]="false">
         <tbody>
             <tr *ngFor="let dir of directoryTable.data;let i=index">
                 <td>
@@ -62,7 +61,7 @@
             </tr>
         </tbody>
     </nz-table>
-    <nz-table #fileTable nzSize="small" [nzData]="currentFileList">
+    <nz-table #fileTable nzSize="small" [nzData]="currentFileList" [nzFrontPagination]="false">
         <!-- <thead>
         <th>#</th>
         <th>filename</th>
